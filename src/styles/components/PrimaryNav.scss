@@ -1,0 +1,33 @@
+@import '../lib/includes';
+
+#primary-navbar {
+    .search-wrapper {
+        max-width: 25rem;
+        @include media-breakpoint-up(md) {
+            order: 99;
+        }
+
+        .form-control {
+            // background: rgba(255,255,255,0.25);
+            $light-color: map-get($theme-colors, "light");
+            @include button-outline-variant(
+                $light-color,
+                $light-color
+            );
+            background: none;
+            &:hover, &:active {
+                background: none;
+            }
+            &::placeholder {
+                color: rgba($light-color, 0.5);
+            }
+        }
+    }
+    .navbar-toggler {
+        outline: none !important;
+        box-shadow: none !important;
+        background: none !important;
+        border: none !important;
+        padding-left: 0;
+    }
+}
