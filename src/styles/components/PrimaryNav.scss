@@ -2,24 +2,21 @@
 
 #primary-navbar {
     .search-wrapper {
-        max-width: 25rem;
-        @include media-breakpoint-up(md) {
-            order: 99;
-        }
-
         .form-control {
             // background: rgba(255,255,255,0.25);
             $light-color: map-get($theme-colors, "light");
-            @include button-outline-variant(
-                $light-color,
-                $light-color
-            );
-            background: none;
-            &:hover, &:active {
-                background: none;
+
+            color: $light-color;
+            background-color: transparent;
+            border-color: $navbar-dark-color;
+            // border-color: rgba($light-color, 0.5);
+            &:active, &:focus {
+                border-color: $light-color;
+                // background-color: rgba($light-color, 0);
+                // border-color: rgba($light-color, 0.5);
             }
             &::placeholder {
-                color: rgba($light-color, 0.5);
+                color: $navbar-dark-color;
             }
         }
     }
@@ -29,5 +26,24 @@
         background: none !important;
         border: none !important;
         padding-left: 0;
+    }
+    .navbar-nav {
+        margin: 1rem 0 0.5rem;
+        .nav-link {
+            padding: 0.1rem 0;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        .search-wrapper {
+            max-width: 25rem;
+            order: 99;
+        }
+        .navbar-nav {
+            margin: 0;
+            .nav-link {
+                padding: $nav-link-padding-y $nav-link-padding-x/2;
+            }
+        }
     }
 }
