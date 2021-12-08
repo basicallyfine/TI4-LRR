@@ -1,0 +1,33 @@
+@import "../../styles/lib/includes";
+
+#glossary-content-list {
+    // display: grid;
+    // grid-template-columns: max-content auto;
+    width: 100%;
+
+    .item-row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+    dt {
+        // grid-column-start: 1;
+        font-weight: normal;
+        font-size: $font-size-sm;
+        line-height: $line-height-base * $font-size-base;
+        margin-right: 1rem;
+        @for $i from 1 through 6 {
+            &.size-h#{$i} {
+                line-height: map-get($font-sizes, $i);
+            }
+        }
+
+        min-width: 1.9rem;
+    }
+    dd {
+        // grid-column-start: 2;
+        overflow: visible;
+        flex-basis: 100%;
+        flex-shrink: 1;
+    }
+}

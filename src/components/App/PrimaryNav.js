@@ -2,9 +2,9 @@ import React from "react";
 import { Container, Navbar, Nav, FormControl } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 
-import routes from "../routes";
+import routes from "../../routes";
 
-import '../styles/components/PrimaryNav.css';
+import './PrimaryNav.css';
 
 const PrimaryNav = () => {
   const location = useLocation();

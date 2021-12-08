@@ -1,7 +1,6 @@
 import { Container } from 'react-bootstrap';
 
-import PrimaryNav from './components/PrimaryNav';
-import './styles/index.css';
+import PrimaryNav from './PrimaryNav';
 
 const App = ({ children }) => {
   return (
