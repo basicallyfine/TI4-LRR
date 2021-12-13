@@ -64,10 +64,12 @@ const Glossary = () => {
         setContent(parseContent(glossary.content));
     }, []);
 
+    // TODO: respect listType from content
+
     return (
         <Fragment>
             <h1>Glossary</h1>
-            {glossary.preamble && <Markdown>{glossary.preamble}</Markdown>}
+            {glossary.preamble && <Markdown listType="a">{glossary.preamble}</Markdown>}
             <dl id="glossary-content-list">
                 {contentItems.map((item) => {
                     const contentHeadingLevel = item.content.match(/^(#)+(?=\s)/);
@@ -76,7 +78,7 @@ const Glossary = () => {
                             <dt className={`size-${contentHeadingLevel ? `h${contentHeadingLevel[0].length}` : 'p'}`}>
                                 {item.number}
                             </dt>
-                            <dd><Markdown>{item.content}</Markdown></dd>
+                            <dd><Markdown listType="a">{item.content}</Markdown></dd>
                         </div> 
                     )
                 })}

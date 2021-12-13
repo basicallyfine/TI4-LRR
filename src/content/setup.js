@@ -1,4 +1,6 @@
 module.exports = `
+# Complete Setup
+
 This section describes how to set up a game using all of the advanced rules. Note that some of these steps vary slightly from the “First-Game Setup” rules.
 
 ### STEP 1—DETERMINE SPEAKER:
