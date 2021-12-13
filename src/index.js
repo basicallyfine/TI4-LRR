@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from 'react-snapshot';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import App from "./components/App";
@@ -8,7 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import routes from "./routes";
 import './styles/index.css';
 
-ReactDOM.render(
+render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
