@@ -1,0 +1,22 @@
+@import "../../styles/lib/includes";
+
+#app-main {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+
+    .app-body {
+        // flex-basis: 0;
+        // flex-grow: 1;
+        height: auto;
+        overflow-y: auto;
+
+        padding-bottom: $spacer;
+        padding-top: $spacer;
+        @include media-breakpoint-up(lg) {
+            padding-top: $spacer * 2;
+        }
+    }
+}

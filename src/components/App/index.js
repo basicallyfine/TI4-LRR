@@ -1,16 +1,18 @@
-import { Container } from 'react-bootstrap';
+import { Container } from "react-bootstrap";
 
-import PrimaryNav from './PrimaryNav';
+import PrimaryNav from "./PrimaryNav";
+
+import "./index.css";
 
 const App = ({ children }) => {
   return (
-    <div className="App">
+    <div id="app-main">
       <PrimaryNav />
-      <Container  fluid="lg">
-        {children}
-      </Container>
+      <div className="app-body">
+        <Container fluid="lg">{children}</Container>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
