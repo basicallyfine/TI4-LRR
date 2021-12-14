@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { render } from 'react-snapshot';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -13,15 +13,27 @@ render(
     <BrowserRouter>
       <Routes>
         {routes.map((route) => (
-          <Route
-            path={route.path}
-            key={route.label}
-            element={
-              <App>
-                <route.component />
-              </App>
-            }
-          />
+          <Fragment key={route.path}>
+            <Route
+              path={route.path}
+              element={(
+                <App>
+                  <route.component/>
+                </App>
+              )}
+            />
+            {route.children && route.children.map((childRoute) => (
+              <Route
+                path={childRoute.path}
+                key={childRoute.path}
+                element={(
+                  <App>
+                    <childRoute.component/>
+                  </App>
+                )}
+              />
+            ))}
+          </Fragment>
         ))}
         <Route path="*" element={<App><h1>NOT FOUND</h1></App>} />
       </Routes>

@@ -1,5 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import _ from 'lodash';
+import slugify from 'slugify';
+
+import { Link, useParams, useLocation } from 'react-router-dom';
 
 import Markdown from '../common/Markdown';
 
@@ -7,19 +10,19 @@ import * as glossary from '../../content/glossary';
 
 import './Glossary.css';
 
-// parse & number content
-function parseContent(content = []) {
-    const items = [];
-    content.forEach((section, sectionIdx) => {
-        const sectionNumber = sectionIdx + 1;
-        let itemNumber = 1;
+const slug = (name) => slugify(name, { lower: true, replacement: '-' }).replace(/[^0-9a-z\-]/g, '');
 
-        if (section.name) {
-            items.push({ 
-                number: sectionNumber,
-                content: `## ${section.name}\n\n${(section.preamble || '').replace(/^\s+/, '')}`,
-            });
-        }
+const Glossary = () => {
+    const params = useParams();
+    const location = useLocation();
+
+    const sectionIdx = _.findIndex(glossary.content, section => section.name && slug(section.name) === _.get(params, 'section'));
+
+    if (sectionIdx >= 0) {
+        const section = glossary.content[sectionIdx];
+        const sectionNumber = sectionIdx + 1;
+        const items = [];
+        let itemNumber = 1;
 
         (section.subsections || []).forEach((subsection) => {
             if (subsection.name || subsection.preamble) {
@@ -45,24 +48,34 @@ function parseContent(content = []) {
             })
         });
 
-        // if (section.related) {
-        //     items.push((
-        //         <p>
-        //             <strong>Related Topics: </strong>
-        //             {section.related.map((related, i) => <Fragment key={related[1]}>{i > 0 ? ', ' : ''}<a href={`#${related[1]}`}>{related[0]}</a></Fragment>)}
-        //         </p>
-        //     ))
-        // }
-    });
-    return items;
-};
-
-const Glossary = () => {
-    const [contentItems, setContent] = useState([]);
-    
-    useEffect(() => {
-        setContent(parseContent(glossary.content));
-    }, []);
+        return (
+            <Fragment>
+                <h1>Glossary</h1>
+                <dl id="glossary-content-list">
+                    <div className="item-row">
+                        <dt className="size-h2">
+                            {sectionNumber}
+                        </dt>
+                        <dd>
+                            <h2>{section.name}</h2>
+                            {section.preamble && <Markdown>{section.preamble}</Markdown>}
+                        </dd>
+                    </div>
+                    {items.map((item) => {
+                        const contentHeadingLevel = item.content.match(/^(#)+(?=\s)/);
+                        return (
+                            <div key={item.number} className="item-row">
+                                <dt className={`size-${contentHeadingLevel ? `h${contentHeadingLevel[0].length}` : 'p'}`}>
+                                    {item.number}
+                                </dt>
+                                <dd><Markdown listType="a">{item.content}</Markdown></dd>
+                            </div> 
+                        )
+                    })}
+                </dl>
+            </Fragment>
+        )
+    }
 
     // TODO: respect listType from content
 
@@ -70,19 +83,14 @@ const Glossary = () => {
         <Fragment>
             <h1>Glossary</h1>
             {glossary.preamble && <Markdown listType="a">{glossary.preamble}</Markdown>}
-            <dl id="glossary-content-list">
-                {contentItems.map((item) => {
-                    const contentHeadingLevel = item.content.match(/^(#)+(?=\s)/);
-                    return (
-                        <div key={item.number} className="item-row">
-                            <dt className={`size-${contentHeadingLevel ? `h${contentHeadingLevel[0].length}` : 'p'}`}>
-                                {item.number}
-                            </dt>
-                            <dd><Markdown listType="a">{item.content}</Markdown></dd>
-                        </div> 
-                    )
-                })}
-            </dl>
+            <ol>
+                {glossary.content.map((section) => (
+                    <li key={section.name}>
+                        <h2><Link to={`${location.pathname.replace(/\/+$/, '')}/${slug(section.name)}/`}>{section.name}</Link></h2>
+                        {section.preamble && <Markdown>{section.preamble}</Markdown>}
+                    </li>
+                ))}
+            </ol>
         </Fragment>
     );
 };

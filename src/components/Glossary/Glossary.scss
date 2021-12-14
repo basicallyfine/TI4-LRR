@@ -18,11 +18,11 @@
         margin-right: 1rem;
         @for $i from 1 through 6 {
             &.size-h#{$i} {
-                line-height: map-get($font-sizes, $i);
+                line-height: map-get($font-sizes, $i) / $font-size-sm;
             }
         }
 
-        min-width: 1.9rem;
+        // min-width: 1.9rem;
     }
     dd {
         // grid-column-start: 2;
