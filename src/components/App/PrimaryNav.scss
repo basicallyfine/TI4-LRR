@@ -2,6 +2,7 @@
 
 #primary-navbar {
     .search-wrapper {
+        position: relative;
         .form-control {
             // background: rgba(255,255,255,0.25);
             $light-color: map-get($theme-colors, "light");
@@ -20,6 +21,7 @@
             }
         }
     }
+
     .navbar-toggler {
         outline: none !important;
         box-shadow: none !important;
@@ -31,6 +33,22 @@
         margin: 1rem 0 0.5rem;
         .nav-link {
             padding: 0.1rem 0;
+        }
+    }
+
+    .search-results {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        width: auto;
+        min-width: 100%;
+        display: flex;
+        overflow-x: visible;
+        .dropdown-menu {
+            width: auto;
+            min-width: 100%;
+            position: relative;
+            margin-left: auto;
         }
     }
 

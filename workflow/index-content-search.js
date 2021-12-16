@@ -39,7 +39,6 @@ const searchDocs = [
             });
         };
 
-        return [];
         return docs;
     })(),
     ...(() => {
@@ -109,60 +108,12 @@ const searchIndex = lunr(function () {
     this.field('body');
 
     for (const doc of searchDocs) {
-        this.add(doc);
+        this.add(Object.assign(doc, {
+            title: doc.title && doc.title.toLowerCase(),
+            body: doc.body && doc.body.toLowerCase(),
+        }));
     };
 });
 
+fs.writeFileSync(path.join(__dirname, '../src/lib/search-docs.json'), JSON.stringify(searchDocs));
 fs.writeFileSync(path.join(__dirname, '../src/lib/search-index.json'), JSON.stringify(searchIndex.toJSON()));
-
-// const searchTerm = process.argv[2];
-// const searchResults = searchIndex.query((query) => {
-//     // prefix search, no boost
-//         query.term(searchTerm, {
-//         wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING,
-//         boost: 2,
-//         editDistance: Math.min(2, Math.round(searchTerm.length * 0.25)),
-//     });
-
-//     query.term(searchTerm, {
-//         boost: 5,
-//         wildcard: lunr.Query.wildcard.TRAILING,
-//         field: 'body',
-//     });
-
-//     query.term(searchTerm, {
-//         boost: 10,
-//         wildcard: lunr.Query.wildcard.TRAILING,
-//         editDistance: Math.min(2, Math.round(searchTerm.length * 0.25)),
-//         field: 'title',
-//     });
-
-//     query.term(searchTerm, {
-//         boost: 20,
-//         field: 'title',
-//     });
-
-//     const words = searchTerm.split(/\s+/);
-//     if (words.length > 1) {
-//         for (const word of words) {
-//             // prefix search, no boost
-//             query.term(word, {
-//                 wildcard: lunr.Query.wildcard.LEADING | lunr.Query.wildcard.TRAILING,
-//                 boost: 1,
-//                 editDistance: Math.min(2, Math.round(word.length * 0.25)),
-//             });
-
-//             query.term(word, {
-//                 boost: 5,
-//                 wildcard: lunr.Query.wildcard.TRAILING,
-//                 editDistance: Math.min(2, Math.round(word.length * 0.25)),
-//                 field: 'title',
-//             });
-
-//             query.term(word, {
-//                 boost: 10,
-//                 field: 'title',
-//             });
-//         }
-//     }
-// });
