@@ -1721,7 +1721,7 @@ To resolve the primary ability on the “Politics” strategy card, the active p
 
 1. The active player chooses any player that does not have the speaker token. The active player may choose themselves as long as they do not have the speaker token. The chosen player places the speaker token in their play area; they are now the speaker.
 2. The active player draws two action cards.
-3.The active player secretly looks at the top two cards of the agenda deck. Then, that player places each card on either the top or the bottom of the deck. If they place both cards on either the top or bottom, they can place them in any order.
+3. The active player secretly looks at the top two cards of the agenda deck. Then, that player places each card on either the top or the bottom of the deck. If they place both cards on either the top or bottom, they can place them in any order.
 `
 },`
 After the active player resolves the primary ability of the “Politics” strategy card, each other player, beginning with the player to the left of the active player and proceeding clockwise, may spend one command token from their strategy pool to draw two action cards.
