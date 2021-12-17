@@ -1,22 +1,21 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import _ from 'lodash';
-import slugify from 'slugify';
 
 import { Link, useParams, useLocation } from 'react-router-dom';
 
-import Markdown from '../common/Markdown';
-
+import utils from '../../lib/utils';
 import * as glossary from '../../content/glossary';
 
-import './Glossary.css';
+import Markdown from '../common/Markdown';
 
-const slug = (name) => slugify(name, { lower: true, replacement: '-' }).replace(/[^0-9a-z\-]/g, '');
+
+import './Glossary.css';
 
 const Glossary = () => {
     const params = useParams();
     const location = useLocation();
 
-    const sectionIdx = _.findIndex(glossary.content, section => section.name && slug(section.name) === _.get(params, 'section'));
+    const sectionIdx = _.findIndex(glossary.content, section => section.name && utils.slug(section.name) === _.get(params, 'section'));
 
     if (sectionIdx >= 0) {
         const section = glossary.content[sectionIdx];
@@ -86,7 +85,7 @@ const Glossary = () => {
             <ol>
                 {glossary.content.map((section) => (
                     <li key={section.name}>
-                        <h2><Link to={`${location.pathname.replace(/\/+$/, '')}/${slug(section.name)}/`}>{section.name}</Link></h2>
+                        <h2><Link to={`${location.pathname.replace(/\/+$/, '')}/${utils.slug(section.name)}/`}>{section.name}</Link></h2>
                         {section.preamble && <Markdown>{section.preamble}</Markdown>}
                     </li>
                 ))}

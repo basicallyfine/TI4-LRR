@@ -1,14 +1,15 @@
 import lunr from 'lunr';
 import _ from 'lodash';
 
-import indexData from './search-index';
-import docs from './search-docs';
+import indexData from '../cache/search-index';
+import docs from '../cache/search-docs';
 
 function Search() {
     const index = lunr.Index.load(indexData);
 
-    return async function (searchTerm, limit = 10) {
-        console.log('search', { searchTerm, limit });
+    return async function (_term = '', limit = 10) {
+        if (!_term) return [];
+        const searchTerm = _term.toLowerCase();
 
         const searchResults = index.query((query) => {
             // prefix search, no boost
@@ -61,7 +62,7 @@ function Search() {
             }
         });
 
-        return searchResults.slice(0, limit).map(result => _.chain(docs).find({ id: result.ref }).pick(['path', 'title', 'id']).value());
+        return searchResults.slice(0, limit).map(result => _.chain(docs).find({ id: result.ref }).pick(['location', 'link', 'title', 'id']).value());
     }
 };
 

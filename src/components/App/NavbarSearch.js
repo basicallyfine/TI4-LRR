@@ -1,6 +1,7 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import _ from 'lodash';
 
+import { Link } from 'react-router-dom';
 import { FormControl } from 'react-bootstrap';
 
 import Search from '../../lib/content-search';
@@ -33,7 +34,7 @@ const NavSearch = () => {
 
     useEffect(() => ( throttledSearchHandler(searchTerm) ), [searchTerm]);
 
-    const show = searchTerm && searchResults.length > 0;
+    const show = searchTerm && (searchResults.length > 0);
 
     return (
         <div className="search-wrapper ms-auto w-auto flex-grow-1">
@@ -47,7 +48,17 @@ const NavSearch = () => {
             />
             <div className="search-results">
                 <ul className={`dropdown-menu ${show ? 'show' : ''}`}>
-                    {searchResults.map(item => <li key={item.id}><a className="dropdown-item" href="#">{item.path.join(' / ')}</a></li>)}
+                    {searchResults.map(item => (
+                        <li key={item.id}>
+                            <Link
+                                className="dropdown-item"
+                                to={item.link}
+                                onClick={(e) => { setSearchTerm(''); }}
+                            >
+                                {item.location.join(' / ')}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>

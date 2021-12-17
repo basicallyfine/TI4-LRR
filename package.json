@@ -20,11 +20,11 @@
     "build-css": "node-sass src/ -o src/",
     "watch-css": "npm run build-css && node-sass src/ -o src/ --watch --recursive",
     "start-js": "PORT=3010 react-scripts start",
-    "start": "npm-run-all -p watch-css start-js index-search",
-    "prebuild": "npm run index-search",
+    "start": "npm-run-all -p watch-css start-js build-search-index",
+    "prebuild": "npm run build-search-index",
     "build": "npm run build-css && react-scripts build && react-snapshot",
     "deploy": "aws --profile nic-cli s3 sync build s3://com.basicallyfine.ti4.lrr --exclude '*DS_Store'",
-    "index-search": "babel-node --presets babel-preset-es2015 -- workflow/index-content-search.js",
+    "build-search-index": "babel-node --presets babel-preset-es2015 -- workflow/index-content-search.js",
     "test": "react-scripts test"
   },
   "eslintConfig": {

@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { markdownToTxt } from 'markdown-to-txt';
 import lunr from 'lunr';
 
+import utils from '../src/lib/utils';
+
 import * as glossary from '../src/content/glossary';
 import setup from '../src/content/setup';
 // TODO: FAQ
@@ -24,16 +26,18 @@ const searchDocs = [
 
         docs.push({
             id: pageName,
-            path: [pageName],
+            location: [pageName],
+            link: '/setup',
             title: pageName,
             body: setupPage[0].content,
         });
         
         for (const section of setupPage.slice(1)) {
-            const path = [pageName, section.name];
+            const location = [pageName, section.name];
             docs.push({
-                id: path.join('|'),
-                path,
+                id: location.join('|'),
+                location,
+                link: `/setup#${section.name}`,
                 title: section.name,
                 body: section.content,
             });
@@ -44,30 +48,33 @@ const searchDocs = [
     ...(() => {
         const docs = [];
         const pageName = 'Glossary';
+        const link = (page = '') => `/glossary/${utils.slug(page)}/`.replace(/\/+$/, '/');
 
         docs.push({
             id: pageName,
-            path: [pageName],
+            location: [pageName],
+            link: link(),
             title: pageName,
             body: glossary.preamble,
         });
 
         glossary.content.forEach((section, sectionIdx) => {
             if (section.preamble) {
-                const path = [pageName, section.name];
-                const id = path.join('|');
+                const location = [pageName, section.name];
+                const id = location.join('|');
                 docs.push({
                     id,
-                    path,
+                    location,
+                    link: link(section.name),
                     title: section.name,
                     body: section.preamble,
                 });
             }
             if (section.subsections) {
                 section.subsections.forEach((subsection, subsectionIdx) => {
-                    const path = [pageName, section.name];
-                    if (subsection.name) path.push(subsection.name);
-                    const id = path.join('|');
+                    const location = [pageName, section.name];
+                    if (subsection.name) location.push(subsection.name);
+                    const id = location.join('|');
                     const body =
                         subsection.body ||
                         (subsection.items || [])
@@ -77,14 +84,16 @@ const searchDocs = [
                             return '';
                         })
                         .join('\n');
+
                     if (_.find(docs, { id })) {
                         _.find(docs, { id }).body += '\n' + body;
                         return;
                     }
                     docs.push({
                         id,
-                        path,
+                        location,
                         title: subsection.name || undefined,
+                        link: link(section.name),
                         body: [subsection.preamble].join('\n'),
                     });
                 });
@@ -96,7 +105,7 @@ const searchDocs = [
 ];
 
 // searchDocs.forEach((doc) => {
-//     console.log(doc.path.join(' > '));
+//     console.log(doc.location.join(' > '));
 //     console.log(doc.title);
 //     console.log(doc.body);
 //     console.log('-------------------');
@@ -115,5 +124,5 @@ const searchIndex = lunr(function () {
     };
 });
 
-fs.writeFileSync(path.join(__dirname, '../src/lib/search-docs.json'), JSON.stringify(searchDocs));
-fs.writeFileSync(path.join(__dirname, '../src/lib/search-index.json'), JSON.stringify(searchIndex.toJSON()));
+fs.writeFileSync(path.join(__dirname, '../src/cache/search-docs.json'), JSON.stringify(searchDocs));
+fs.writeFileSync(path.join(__dirname, '../src/cache/search-index.json'), JSON.stringify(searchIndex.toJSON()));
