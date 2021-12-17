@@ -55,7 +55,7 @@ const NavSearch = () => {
                                 to={item.link}
                                 onClick={(e) => { setSearchTerm(''); }}
                             >
-                                {item.location.join(' / ')}
+                                {item.location.map(page => <span key={page} className="page">{page}</span>)}
                             </Link>
                         </li>
                     ))}
